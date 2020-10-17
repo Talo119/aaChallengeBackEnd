@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Data;
 
 namespace AAchallenge.Web
 {
@@ -26,6 +28,10 @@ namespace AAchallenge.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddDbContext<DbContextAAchallenge>(options =>
+             options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data
 {
-    class DbContextAAchallenge : DbContext
+    public class DbContextAAchallenge : DbContext
     {
 
         public DbContextAAchallenge(DbContextOptions<DbContextAAchallenge> options) : base(options)
