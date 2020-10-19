@@ -20,11 +20,7 @@ namespace Entities.Clients
         [StringLength(50, MinimumLength = 10, ErrorMessage = "The Email must not have more than 50 characters, nor less than 10 characters.")]
         public string email { get; set; }
         [Required]
-        public decimal creditlimit { get; set; }
-
-
-
-
+        public decimal credit_limit { get; set; }
 
 
     }
