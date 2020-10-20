@@ -33,6 +33,12 @@ namespace AAchallenge.Web
             services.AddDbContext<DbContextAAchallenge>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("Connection")));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Todos",
+                    builder => builder.WithOrigins("*").WithHeaders("*").WithMethods("*"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +50,7 @@ namespace AAchallenge.Web
             //}
             app.UseDeveloperExceptionPage();
             //app.UseSwagger();
-
+            app.UseCors("Todos");
             app.UseHttpsRedirection();
 
             app.UseRouting();
