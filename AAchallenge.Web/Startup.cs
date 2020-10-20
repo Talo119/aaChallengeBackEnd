@@ -28,6 +28,7 @@ namespace AAchallenge.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            //services.AddSwaggerGen();            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddDbContext<DbContextAAchallenge>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("Connection")));
@@ -37,10 +38,12 @@ namespace AAchallenge.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            app.UseDeveloperExceptionPage();
+            //app.UseSwagger();
 
             app.UseHttpsRedirection();
 

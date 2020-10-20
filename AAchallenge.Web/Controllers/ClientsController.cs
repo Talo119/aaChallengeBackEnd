@@ -11,7 +11,7 @@ using AAchallenge.Web.Models.Clients;
 
 namespace AAchallenge.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]/{id?}")]
     [ApiController]
     public class ClientsController : ControllerBase
     {
@@ -23,7 +23,8 @@ namespace AAchallenge.Web.Controllers
         }
 
         // GET: api/Clients/List
-        [HttpGet("[action]")]
+        [HttpGet]        
+        [ActionName("List")]
         public async Task<IEnumerable<ClientViewModel>> List()
         {
             var client = await _context.Clients.ToListAsync();
@@ -38,7 +39,69 @@ namespace AAchallenge.Web.Controllers
 
             });
         }
-            
+
+        // GET: api/Clients/ShowClient/1
+        [HttpGet]
+        [ActionName("ShowClient")]
+        public async Task<IActionResult> ShowClient([FromRoute] int id)
+        {
+            var client = await _context.Clients.FindAsync(id);
+            if(client == null)
+            {
+                return NotFound();
+            }
+            return Ok(new ClientViewModel
+            {
+                idclient = client.idclient,
+                name = client.name,
+                address = client.address,
+                phone_number = client.phone_number,
+                email = client.email,
+                credit_limit = client.credit_limit
+            });
+        }
+
+        // GET: api/Clients/ActualizeClient
+        [HttpPut]
+        [ActionName("ActualizeClient")]
+        public async Task<IActionResult> ActualizeClient([FromBody] ActualizeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (model.idclient < 0)
+            {
+                return BadRequest();
+            }
+
+            var client = await _context.Clients.FirstOrDefaultAsync(c => c.idclient == model.idclient);
+
+            if(client == null)
+            {
+                return NotFound();
+            }
+
+            client.name = model.name;
+            client.address = model.address;
+            client.phone_number = model.phone_number;
+            client.email = model.email;
+            client.credit_limit = model.credit_limit;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+
+        }
+
 
         private bool ClientExists(int id)
         {
