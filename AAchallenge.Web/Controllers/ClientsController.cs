@@ -61,7 +61,7 @@ namespace AAchallenge.Web.Controllers
             });
         }
 
-        // GET: api/Clients/ActualizeClient
+        // PUT: api/Clients/ActualizeClient
         [HttpPut]
         [ActionName("ActualizeClient")]
         public async Task<IActionResult> ActualizeClient([FromBody] ActualizeViewModel model)
@@ -102,6 +102,37 @@ namespace AAchallenge.Web.Controllers
 
         }
 
+        //POST: api/Clients/CreateClient
+        [HttpPost]
+        [ActionName("CreateClient")]
+        public async Task<IActionResult> CreateClient([FromBody] CreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Client client = new Client
+            {
+                name = model.name,
+                address = model.address,
+                phone_number = model.phone_number,
+                email = model.email,
+                credit_limit = model.credit_limit
+            };
+
+            _context.Clients.Add(client);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
 
         private bool ClientExists(int id)
         {
