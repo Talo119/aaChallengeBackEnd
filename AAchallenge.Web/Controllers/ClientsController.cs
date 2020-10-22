@@ -40,6 +40,19 @@ namespace AAchallenge.Web.Controllers
             });
         }
 
+        // GET: api/Categorias/Select
+        [HttpGet("[action]")]
+        [ActionName("Select")]
+        public async Task<IEnumerable<SelectViewModel>> Select()
+        {
+            var client = await _context.Clients.ToListAsync();
+            return client.Select(c => new SelectViewModel
+            {
+                idclient = c.idclient,
+                name = c.name
+            });
+        }
+
         // GET: api/Clients/ShowClient/1
         [HttpGet]
         [ActionName("ShowClient")]
