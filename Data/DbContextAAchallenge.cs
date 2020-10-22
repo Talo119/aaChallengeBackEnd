@@ -1,5 +1,7 @@
 ﻿using Data.Mapping.Clients;
+using Data.Mapping.Finance.Loans;
 using Entities.Clients;
+using Entities.Finance.Loans;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,7 @@ namespace Data
     public class DbContextAAchallenge : DbContext
     {
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Loan> Loans { get; set; }
 
         public DbContextAAchallenge(DbContextOptions<DbContextAAchallenge> options) : base(options)
         {
@@ -20,6 +23,7 @@ namespace Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ClientMap());
+            modelBuilder.ApplyConfiguration(new LoanMap());
         }
 
     }
