@@ -24,6 +24,8 @@ namespace Entities.Finance.Loans
         [Required]
         public decimal fee { get; set; }
 
+        public DateTime created_dt { get; set; }
+
         public Client client { get; set; }
 
     }
