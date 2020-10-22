@@ -43,6 +43,41 @@ namespace AAchallenge.Web.Controllers
             });
         }
 
+        //POST : api/Loans/CreateLoan
+        [HttpPost]
+        [ActionName("CreateLoan")]
+        public async Task<ActionResult> CreateLogan([FromBody] CreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var dateTime = DateTime.Now;
+            Loan loan = new Loan
+            {
+                idclient = model.idclient,
+                capital = model.capital,
+                interest_rate = model.interest_rate,
+                period = model.period,
+                interest_to_pay = model.period,
+                amount_to_finance = model.amount_to_finance,
+                fee = model.amount_to_finance,
+                created_dt = dateTime
+            };
+            _context.Loans.Add(loan);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
         private bool LoanExists(int id)
         {
             return _context.Loans.Any(e => e.idloan == id);
