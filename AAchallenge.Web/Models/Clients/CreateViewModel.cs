@@ -10,6 +10,8 @@ namespace AAchallenge.Web.Models.Clients
     {
         
         [Required]
+        public int idclient { get; set; }
+        [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "The Name must not have more than 50 characters, nor less than 3 characters.")]
         public string name { get; set; }
         [Required]

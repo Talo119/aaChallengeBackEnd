@@ -22,6 +22,10 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Loan>()
+                .HasOne(l => l.client)
+                .WithMany(c => c.loans)
+                .HasForeignKey(l => l.idclient);
             modelBuilder.ApplyConfiguration(new ClientMap());
             modelBuilder.ApplyConfiguration(new LoanMap());
         }

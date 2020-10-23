@@ -13,6 +13,7 @@ namespace Data.Mapping.Finance.Loans
         {
             builder.ToTable("loan")
                 .HasKey(l => l.idloan);
+                
         }
     }
 }

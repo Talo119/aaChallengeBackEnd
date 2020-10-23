@@ -27,19 +27,22 @@ namespace AAchallenge.Web.Controllers
         [ActionName("List")]
         public async Task<IEnumerable<LoanViewModel>> List()
         {
-            var loan = await _context.Loans.Include(l => l.client).ToListAsync();
-            return loan.Select(a => new LoanViewModel
+            var loan = await _context.Loans.
+                Include(l => l.client)
+                .OrderByDescending(l => l.idloan)
+                .ToListAsync();
+            return loan.Select(l => new LoanViewModel
             {
-                idloan = a.idloan,
-                idclient = a.idclient,
-                client = a.client.name,
-                capital = a.capital,
-                interest_rate = a.interest_rate,
-                period = a.period,
-                interest_to_pay = a.interest_to_pay,
-                amount_to_finance = a.amount_to_finance,
-                fee = a.fee,
-                created_dt = a.created_dt
+                idloan = l.idloan,
+                idclient =l.idclient,
+                client = l.client.name,
+                capital = l.capital,
+                interest_rate = l.interest_rate,
+                period = l.period,
+                interest_to_pay = l.interest_to_pay,
+                amount_to_finance = l.amount_to_finance,
+                fee = l.fee,
+                created_dt = l.created_dt
             });
         }
 
