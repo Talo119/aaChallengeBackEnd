@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using Entities.Clients;
+using Entities.Finance.Payments;
 
 namespace Entities.Finance.Loans
 {
@@ -27,6 +28,8 @@ namespace Entities.Finance.Loans
         public DateTime created_dt { get; set; }
 
         public Client client { get; set; }
+
+        public ICollection<Payment> payments { get; set; }
 
     }
 }

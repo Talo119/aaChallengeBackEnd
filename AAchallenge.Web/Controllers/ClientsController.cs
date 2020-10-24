@@ -40,10 +40,10 @@ namespace AAchallenge.Web.Controllers
             });
         }
 
-        // GET: api/Categorias/Select
-        [HttpGet("[action]")]
-        [ActionName("Select")]
-        public async Task<IEnumerable<SelectViewModel>> Select()
+        // GET: api/Clients/SelectClients
+        [HttpGet]
+        [ActionName("SelectClients")]
+        public async Task<IEnumerable<SelectViewModel>> SelectClients()
         {
             var client = await _context.Clients.ToListAsync();
             return client.Select(c => new SelectViewModel

@@ -49,7 +49,7 @@ namespace AAchallenge.Web.Controllers
         //POST : api/Loans/CreateLoan
         [HttpPost]
         [ActionName("CreateLoan")]
-        public async Task<ActionResult> CreateLogan([FromBody] CreateViewModel model)
+        public async Task<ActionResult> CreateLoan([FromBody] CreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -63,9 +63,9 @@ namespace AAchallenge.Web.Controllers
                 capital = model.capital,
                 interest_rate = model.interest_rate,
                 period = model.period,
-                interest_to_pay = model.period,
+                interest_to_pay = model.interest_to_pay,
                 amount_to_finance = model.amount_to_finance,
-                fee = model.amount_to_finance,
+                fee = model.fee,
                 created_dt = dateTime
             };
             _context.Loans.Add(loan);

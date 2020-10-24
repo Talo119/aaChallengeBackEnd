@@ -8,9 +8,9 @@ namespace AAchallenge.Web.Models.Finance.Loans
 {
     public class CreateViewModel
     {
-        [Required]
-        public int idloan { get; set; }
-        [Required]
+        //[Required]
+        //public int idloan { get; set; }
+        [Required]  
         public int idclient { get; set; }
         [Required]
         public decimal capital { get; set; }
