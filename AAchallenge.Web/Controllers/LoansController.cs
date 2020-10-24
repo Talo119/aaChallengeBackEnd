@@ -81,6 +81,35 @@ namespace AAchallenge.Web.Controllers
             return Ok();
         }
 
+        //PUT : api/Loans/Cancel/1
+        [HttpPut]
+        [ActionName("Cancel")]
+        public async Task<ActionResult> Cancel([FromRoute] int id)
+        {
+            if(id <= 0)
+            {
+                return BadRequest();
+            }
+
+            var loan = await _context.Loans.FirstOrDefaultAsync(l => l.idloan == id);
+            if (loan == null)
+            {
+                return NotFound();
+            }
+            loan.condicion = false;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+
         private bool LoanExists(int id)
         {
             return _context.Loans.Any(e => e.idloan == id);

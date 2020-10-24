@@ -27,6 +27,8 @@ namespace Entities.Finance.Loans
 
         public DateTime created_dt { get; set; }
 
+        public bool condicion { get; set; }
+
         public Client client { get; set; }
 
         public ICollection<Payment> payments { get; set; }
