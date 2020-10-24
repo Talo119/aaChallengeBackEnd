@@ -18,5 +18,6 @@ namespace AAchallenge.Web.Models.Finance.Loans
         public decimal amount_to_finance { get; set; }        
         public decimal fee { get; set; }
         public DateTime created_dt { get; set; }
+        public bool condicion { get; set; }
     }
 }

@@ -36,7 +36,8 @@ namespace AAchallenge.Web.Controllers
                 idpayment =  p.idpayment,
                 idloan = p.idloan,
                 amount = p.amount,
-                created_dt = p.created_dt
+                created_dt = p.created_dt,
+                condicion = p.condicion                
             });
         }
 
@@ -56,7 +57,8 @@ namespace AAchallenge.Web.Controllers
             {
                 idloan = model.idloan,
                 amount = model.amount,
-                created_dt = dateTime
+                created_dt = dateTime,
+                condicion = true
             };
             _context.Payments.Add(payment);
 
@@ -98,6 +100,25 @@ namespace AAchallenge.Web.Controllers
             return Ok();
         }
 
+        //GET : api/Payments/ListDetail/1
+        [HttpGet]
+        [ActionName("ListDetail")]
+        public async Task<IEnumerable<PaymentViewModel>> ListDetail([FromRoute] int id)
+        {
+            var payment = await _context.Payments.
+                Include(p => p.loan)
+                .Where(d => d.loan.idloan == id)
+                .ToListAsync();
+
+            return payment.Select(p => new PaymentViewModel
+            {
+                idpayment = p.idpayment,
+                idloan = p.idloan,
+                amount = p.amount,
+                created_dt = p.created_dt,
+                condicion = p.condicion
+            });
+        }
 
         private bool PaymentExists(int id)
         {
