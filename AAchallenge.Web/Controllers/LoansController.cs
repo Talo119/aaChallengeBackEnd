@@ -42,7 +42,8 @@ namespace AAchallenge.Web.Controllers
                 interest_to_pay = l.interest_to_pay,
                 amount_to_finance = l.amount_to_finance,
                 fee = l.fee,
-                created_dt = l.created_dt
+                created_dt = l.created_dt,
+                condicion = l.condicion
             });
         }
 
@@ -66,7 +67,8 @@ namespace AAchallenge.Web.Controllers
                 interest_to_pay = model.interest_to_pay,
                 amount_to_finance = model.amount_to_finance,
                 fee = model.fee,
-                created_dt = dateTime
+                created_dt = dateTime,
+                condicion = true
             };
             _context.Loans.Add(loan);
             try
