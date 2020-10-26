@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Data;
 using Entities.Users;
 using AAchallenge.Web.Models.Users.User;
+using Microsoft.Extensions.Configuration;
 
 namespace AAchallenge.Web.Controllers
 {
@@ -16,10 +17,12 @@ namespace AAchallenge.Web.Controllers
     public class UsersController : ControllerBase
     {
         private readonly DbContextAAchallenge _context;
+        private readonly IConfiguration _config;
 
-        public UsersController(DbContextAAchallenge context)
+        public UsersController(DbContextAAchallenge context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         //GET : api/Users/List
@@ -39,6 +42,60 @@ namespace AAchallenge.Web.Controllers
                 condicion = u.condicion
             });
         }
+
+        //POST : api/Users/Create
+        [HttpPost]
+        [ActionName("Create")]
+        public async Task<ActionResult> Create ([FromBody] CreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var email = model.email.ToLower();
+            if(await _context.Users.AnyAsync(u=> u.email == email))
+            {
+                return BadRequest("The email already exists.");
+            }
+
+            CreatePasswordHash(model.password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            User user = new User
+            {
+                idrole = model.idrole,
+                nombre = model.nombre,
+                email = model.email,
+                password_hash = passwordHash,
+                password_salt = passwordSalt,
+                condicion = true
+            };
+
+            _context.Users.Add(user);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+
+        }
+
 
         private bool UserExists(int id)
         {
