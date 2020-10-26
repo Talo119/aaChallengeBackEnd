@@ -20,6 +20,8 @@ namespace Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<User> users { get; set; }
+
         public DbContextAAchallenge(DbContextOptions<DbContextAAchallenge> options) : base(options)
         {
 
@@ -38,10 +40,17 @@ namespace Data
                 .HasOne(p => p.loan)
                 .WithMany(l => l.payments)
                 .HasForeignKey(p => p.idloan);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.role)
+                .WithMany(r => r.users)
+                .HasForeignKey(u => u.idrole);
+
             modelBuilder.ApplyConfiguration(new ClientMap());
             modelBuilder.ApplyConfiguration(new LoanMap());
             modelBuilder.ApplyConfiguration(new PaymentMap());
             modelBuilder.ApplyConfiguration(new RoleMap());
+            modelBuilder.ApplyConfiguration(new UserMap());
         }
 
     }

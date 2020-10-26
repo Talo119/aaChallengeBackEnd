@@ -14,5 +14,8 @@ namespace Entities.Users
         [StringLength(100, ErrorMessage = "The name must be no more than 100 characters.")]
         public string description { get; set; }
         public bool condicion { get; set; }
+
+        public ICollection<User> users { get; set; }
+
     }
 }
