@@ -11,7 +11,7 @@ namespace Data.Mapping.Users
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("user")
+            builder.ToTable("users")
                 .HasKey(u => u.iduser);
             builder.Property(u => u.nombre)
                 .HasMaxLength(100);

@@ -20,7 +20,7 @@ namespace Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-        public DbSet<User> users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public DbContextAAchallenge(DbContextOptions<DbContextAAchallenge> options) : base(options)
         {
