@@ -9,6 +9,10 @@ using Data;
 using Entities.Users;
 using AAchallenge.Web.Models.Users.User;
 using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace AAchallenge.Web.Controllers
 {
@@ -65,10 +69,10 @@ namespace AAchallenge.Web.Controllers
             {
                 idrole = model.idrole,
                 nombre = model.nombre,
-                email = model.email,
+                email = model.email.ToLower(),
+                condicion = true,
                 password_hash = passwordHash,
-                password_salt = passwordSalt,
-                condicion = true
+                password_salt = passwordSalt
             };
 
             _context.Users.Add(user);
@@ -96,6 +100,64 @@ namespace AAchallenge.Web.Controllers
 
         }
 
+        //POST : api/Users/Login
+        [HttpPost]
+        [ActionName("Login")]
+        public async Task<ActionResult> Login(LoginViewModel model)
+        {
+            var email = model.email.ToLower();
+            var user = await _context.Users.Where(u => u.condicion == true).Include(u => u.role).FirstOrDefaultAsync(u => u.email == email);
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            if(!verifyPasswordHash(model.password, user.password_hash, user.password_salt))
+            {
+                return NotFound();
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.iduser.ToString()),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, user.role.name),
+                new Claim("iduser", user.iduser.ToString()),
+                new Claim("role", user.role.name),
+                new Claim("nombre", user.nombre)
+
+            };
+
+            return Ok(
+                new {toke = GenerateToken(claims)}
+            );
+        }
+
+        private bool verifyPasswordHash(string password, byte[] passwordHashAlmacenado, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var passwordHashNuevo = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return new ReadOnlySpan<byte>(passwordHashAlmacenado).SequenceEqual(new ReadOnlySpan<byte>(passwordHashNuevo));
+            }
+        }
+
+        private string GenerateToken(List<Claim> claims)
+        {
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var creds = new SigningCredentials(
+                key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                _config["Jwt:Issuer"],
+                _config["Jwt:Issuer"],
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds,
+                claims: claims);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
         private bool UserExists(int id)
         {
