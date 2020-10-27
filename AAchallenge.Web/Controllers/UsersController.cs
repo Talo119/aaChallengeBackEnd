@@ -130,7 +130,7 @@ namespace AAchallenge.Web.Controllers
             };
 
             return Ok(
-                new {toke = GenerateToken(claims)}
+                new {token = GenerateToken(claims)}
             );
         }
 
