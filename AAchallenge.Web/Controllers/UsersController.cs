@@ -159,6 +159,11 @@ namespace AAchallenge.Web.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        private object SymmetricSecurityKey(object p)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.iduser == id);
