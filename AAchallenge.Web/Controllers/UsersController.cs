@@ -13,6 +13,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AAchallenge.Web.Controllers
 {
@@ -29,9 +30,10 @@ namespace AAchallenge.Web.Controllers
             _config = config;
         }
 
-        //GET : api/Users/List
+        //GET : api/Users/List        
         [HttpGet]
         [ActionName("List")]
+        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<UserViewModel>> List()
         {
             var users = await _context.Users.Include(u => u.role).ToListAsync();
@@ -47,9 +49,10 @@ namespace AAchallenge.Web.Controllers
             });
         }
 
-        //POST : api/Users/Create
+        //POST : api/Users/Create        
         [HttpPost]
         [ActionName("Create")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create ([FromBody] CreateViewModel model)
         {
             if (!ModelState.IsValid)

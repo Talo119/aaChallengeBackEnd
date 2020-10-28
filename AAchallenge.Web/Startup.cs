@@ -70,11 +70,9 @@ namespace AAchallenge.Web
             //app.UseSwagger();
             app.UseCors("Todos");
             app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

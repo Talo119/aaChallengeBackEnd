@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Data;
 using AAchallenge.Web.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AAchallenge.Web.Controllers
 {
@@ -22,6 +23,7 @@ namespace AAchallenge.Web.Controllers
         //GET : api/Roles/List
         [HttpGet]
         [ActionName("List")]
+        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<RoleViewModel>> List()
         {
             var role = await _context.Roles.ToListAsync();
@@ -37,6 +39,7 @@ namespace AAchallenge.Web.Controllers
         //GET : api/Roles/Select
         [HttpGet]
         [ActionName("Select")]
+        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<SelectViewModel>> Select()
         {
             var role = await _context.Roles.Where(r => r.condicion == true).ToListAsync();
