@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Data;
 using Entities.Finance.Loans;
 using AAchallenge.Web.Models.Finance.Loans;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AAchallenge.Web.Controllers
 {
@@ -25,6 +26,7 @@ namespace AAchallenge.Web.Controllers
         //GET : api/Loans/List
         [HttpGet]
         [ActionName("List")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
         public async Task<IEnumerable<LoanViewModel>> List()
         {
             var loan = await _context.Loans.
@@ -50,6 +52,7 @@ namespace AAchallenge.Web.Controllers
         //POST : api/Loans/CreateLoan
         [HttpPost]
         [ActionName("CreateLoan")]
+        [Authorize(Roles = "Admin,Credits")]
         public async Task<ActionResult> CreateLoan([FromBody] CreateViewModel model)
         {
             if (!ModelState.IsValid)
@@ -86,6 +89,7 @@ namespace AAchallenge.Web.Controllers
         //PUT : api/Loans/Cancel/1
         [HttpPut]
         [ActionName("Cancel")]
+        [Authorize(Roles = "Admin,Credits")]
         public async Task<ActionResult> Cancel([FromRoute] int id)
         {
             if(id <= 0)
