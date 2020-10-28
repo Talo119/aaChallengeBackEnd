@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Data;
 using Entities.Finance.Payments;
 using AAchallenge.Web.Models.Finance.Payments;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AAchallenge.Web.Controllers
 {
@@ -25,6 +26,7 @@ namespace AAchallenge.Web.Controllers
         //GET : api/Payments/List
         [HttpGet]
         [ActionName("List")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
         public async Task<IEnumerable<PaymentViewModel>> List()
         {
             var payment = await _context.Payments.
@@ -45,6 +47,7 @@ namespace AAchallenge.Web.Controllers
         //POST : api/Payments/Create
         [HttpPost]
         [ActionName("Create")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
         public async Task<ActionResult> Create([FromBody] CreateViewModel model)
         {
             if (!ModelState.IsValid)
@@ -76,6 +79,7 @@ namespace AAchallenge.Web.Controllers
         //PUT : api/Payments/Cancel/1
         [HttpPut]
         [ActionName("Cancel")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
         public async Task<ActionResult> Cancel([FromRoute] int id)
         {
             if (id <= 0)
@@ -103,6 +107,7 @@ namespace AAchallenge.Web.Controllers
         //GET : api/Payments/ListDetail/1
         [HttpGet]
         [ActionName("ListDetail")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
         public async Task<IEnumerable<PaymentViewModel>> ListDetail([FromRoute] int id)
         {
             var payment = await _context.Payments.
