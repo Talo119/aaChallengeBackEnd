@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Data;
 using Entities.Clients;
 using AAchallenge.Web.Models.Clients;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AAchallenge.Web.Controllers
 {
@@ -25,6 +26,7 @@ namespace AAchallenge.Web.Controllers
         // GET: api/Clients/List
         [HttpGet]        
         [ActionName("List")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
         public async Task<IEnumerable<ClientViewModel>> List()
         {
             var client = await _context.Clients.ToListAsync();
@@ -43,6 +45,7 @@ namespace AAchallenge.Web.Controllers
         // GET: api/Clients/SelectClients
         [HttpGet]
         [ActionName("SelectClients")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
         public async Task<IEnumerable<SelectViewModel>> SelectClients()
         {
             var client = await _context.Clients.ToListAsync();
@@ -56,6 +59,7 @@ namespace AAchallenge.Web.Controllers
         // GET: api/Clients/ShowClient/1
         [HttpGet]
         [ActionName("ShowClient")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
         public async Task<IActionResult> ShowClient([FromRoute] int id)
         {
             var client = await _context.Clients.FindAsync(id);
@@ -77,6 +81,7 @@ namespace AAchallenge.Web.Controllers
         // PUT: api/Clients/ActualizeClient
         [HttpPut]
         [ActionName("ActualizeClient")]
+        [Authorize(Roles = "Admin,Credits")]
         public async Task<IActionResult> ActualizeClient([FromBody] ActualizeViewModel model)
         {
             if (!ModelState.IsValid)
@@ -118,6 +123,7 @@ namespace AAchallenge.Web.Controllers
         //POST: api/Clients/CreateClient
         [HttpPost]
         [ActionName("CreateClient")]
+        [Authorize(Roles = "Admin,Credits")]
         public async Task<IActionResult> CreateClient([FromBody] CreateViewModel model)
         {
             if (!ModelState.IsValid)
