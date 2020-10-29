@@ -115,8 +115,8 @@ namespace AAchallenge.Web.Controllers
             return Ok();
         }
 
-        // GET: api/Loans/LoansPerMonth
-        
+        // GET: api/Loans/LoansPerClient
+
         [HttpGet]
         [ActionName("LoansPerClient")]
         [Authorize(Roles = "Admin,Credits,Charges")]

@@ -125,6 +125,28 @@ namespace AAchallenge.Web.Controllers
             });
         }
 
+
+        // GET: api/Payments/PaymentsPerClient
+
+        [HttpGet]
+        [ActionName("PaymentsPerClient")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
+        public async Task<IEnumerable<ChartViewModel>> PaymentsPerClient()
+        {
+            var query = await _context.Payments
+                .GroupBy(p => p.loan.idclient)
+                .Select(p => new { label = p.Key, value = p.Sum(p => p.amount) })
+                .OrderByDescending(x => x.label)
+                .Take(12)
+                .ToListAsync();
+            return query.Select(p => new ChartViewModel
+            {
+                label = p.label.ToString(),
+                value = p.value
+            });
+        }
+
+
         private bool PaymentExists(int id)
         {
             return _context.Payments.Any(e => e.idpayment == id);

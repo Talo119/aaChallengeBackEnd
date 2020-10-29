@@ -18,6 +18,7 @@ namespace Entities.Finance.Payments
         public bool condicion { get; set; }
 
         public Loan loan { get; set; }
+        
 
     }
 }
