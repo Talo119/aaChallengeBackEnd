@@ -115,6 +115,25 @@ namespace AAchallenge.Web.Controllers
             return Ok();
         }
 
+        // GET: api/Loans/LoansPerMonth
+        
+        [HttpGet]
+        [ActionName("LoansPerClient")]
+        [Authorize(Roles = "Admin,Credits,Charges")]
+        public async Task<IEnumerable<ChartViewModel>> LoansPerClient()
+        {
+            var query = await _context.Loans
+                .GroupBy(l => l.client.name)
+                .Select(l => new { label = l.Key, value = l.Sum(l => l.amount_to_finance) })
+                .OrderByDescending(x => x.label)
+                .Take(12)
+                .ToListAsync();
+            return query.Select(l => new ChartViewModel
+            {
+                label = l.label.ToString(),
+                value = l.value
+            });
+        }
 
         private bool LoanExists(int id)
         {
